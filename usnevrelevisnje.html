@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atest Usana i Poziv na Kafu ☕</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            position: relative;
+        }
+
+        h1 {
+            color: #d81b60;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* Kamera sekcija */
+        #cameraContainer {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror efekt */
+        }
+
+        .scanner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px dashed rgba(255, 64, 129, 0.7);
+            box-sizing: border-box;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .target-box {
+            width: 130px;
+            height: 70px;
+            border: 3px solid #ff4081;
+            border-radius: 40px;
+            box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        .scan-text {
+            color: #fff;
+            background: rgba(0,0,0,0.6);
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* Usne koje rastu */
+        .lips-container {
+            font-size: 50px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            user-select: none;
+        }
+
+        .meter {
+            font-weight: bold;
+            color: #ad1457;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 10px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        #yesBtn {
+            background-color: #2e7d32;
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.05);
+            background-color: #1b5e20;
+        }
+
+        #noBtn {
+            background-color: #c62828;
+            color: white;
+            position: absolute;
+            box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
+        }
+
+        /* Završna poruka */
+        #successMessage {
+            display: none;
+            color: #1b5e20;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="card">
+        <h1 id="title">Atest volumena & Mjerač usana 💋</h1>
+        <p class="subtitle" id="subtitle">Sistem koristi AI prednju kameru za kalibraciju volumena u realnom vremenu.</p>
+
+        <!-- Kamera sekcija koja se aktivira -->
+        <div id="cameraContainer">
+            <video id="webcam" autoplay playsinline muted></video>
+            <div class="scanner-overlay">
+                <div class="target-box"></div>
+                <div class="scan-text">TARGETING: LIPS (VOLUMEN DETECTED)</div>
+            </div>
+        </div>
+
+        <div class="lips-container" id="lips" onclick="pumpLips()">💋</div>
+        <div class="meter" id="volumeMeter">Trenutni volumen: 2.5 ml (Klikni na usne da pojačaš!)</div>
+
+        <div class="buttons" id="buttonContainer">
+            <button id="yesBtn" onclick="acceptCoffee()">Idemo na kafu! ☕</button>
+            <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">Neću 🙄</button>
+        </div>
+
+        <div id="successMessage">
+            Sistem verifikovao: <strong>MAKSIMALAN VOLUMEN!</strong><br>
+            🎉 Čestitke! Uslovi ispunjeni: Kafa je obavezna, ali strogo <strong>BEZ SLAMČICE</strong>! 😉
+        </div>
+    </div>
+
+    <script>
+        let volume = 2.5;
+        let scale = 1;
+
+        // Pokretanje prednje kamere automatski kad se stranica otvori
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+            .then(stream => {
+                const videoElement = document.getElementById('webcam');
+                videoElement.srcObject = stream;
+            })
+            .catch(err => {
+                console.log("Kamera nije dozvoljena ili je blokirana: ", err);
+                document.getElementById('cameraContainer').innerHTML = "<div style='color:white; display:flex; align-items:center; justify-content:center; height:100%; font-size:13px;'>AI Senzor aktiviran (Simulacija kadra)</div>";
+            });
+
+        function pumpLips() {
+            volume += 1.2;
+            scale += 0.15;
+            
+            const lips = document.getElementById('lips');
+            lips.style.transform = `scale(${scale})`;
+
+            const meter = document.getElementById('volumeMeter');
+            if (volume < 8.0) {
+                meter.innerText = `Trenutni volumen: ${volume.toFixed(1)} ml (Pumpaj još!)`;
+            } else {
+                meter.innerText = `🚨 UPOZORENJE: OPASNOST OD EKSPLOZIJE (${volume.toFixed(1)} ml)!`;
+                meter.style.color = "#d32f2f";
+            }
+        }
+
+        function moveButton() {
+            const noBtn = document.getElementById('noBtn');
+            const card = document.getElementById('card');
+            
+            const maxX = card.clientWidth - noBtn.offsetWidth - 30;
+            const maxY = 120;
+            
+            const randomX = Math.random() * maxX - (maxX / 2);
+            const randomY = (Math.random() - 0.5) * 80;
+
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        function acceptCoffee() {
+            document.getElementById('buttonContainer').style.display = 'none';
+            document.getElementById('cameraContainer').style.display = 'none';
+            document.getElementById('lips').style.display = 'none';
+            document.getElementById('volumeMeter').style.display = 'none';
+            document.getElementById('title').style.display = 'none';
+            document.getElementById('subtitle').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
