@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Lip-Volume Scanner v3.4</title>
+    <title>Zen & Lip Alignment AI 🧘‍♀️💋</title>
     <style>
         * {
             box-sizing: border-box;
@@ -18,7 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #0f0c20;
+            background: #120c1f;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             color: #fff;
             overflow: hidden;
@@ -26,12 +26,12 @@
 
         .container {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(224, 64, 251, 0.2);
             padding: 24px;
             border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
             text-align: center;
             max-width: 400px;
             width: 92%;
@@ -40,9 +40,9 @@
 
         .header-tag {
             display: inline-block;
-            background: rgba(255, 64, 129, 0.15);
-            border: 1px solid rgba(255, 64, 129, 0.4);
-            color: #ff4081;
+            background: rgba(224, 64, 251, 0.15);
+            border: 1px solid rgba(224, 64, 251, 0.4);
+            color: #e040fb;
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 11px;
@@ -56,16 +56,17 @@
             font-size: 20px;
             margin: 0 0 6px 0;
             font-weight: 700;
+            color: #f3e5f5;
         }
 
         p.desc {
             font-size: 13px;
             color: rgba(255, 255, 255, 0.6);
-            margin: 0 0 20px 0;
+            margin: 0 0 18px 0;
             line-height: 1.4;
         }
 
-        /* Video / Camera Section */
+        /* Camera Wrapper */
         .camera-wrapper {
             position: relative;
             width: 100%;
@@ -73,9 +74,9 @@
             background: #000;
             border-radius: 24px;
             overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-            border: 2px solid rgba(255, 64, 129, 0.3);
+            border: 2px solid rgba(224, 64, 251, 0.3);
             cursor: pointer;
+            box-shadow: 0 0 20px rgba(224, 64, 251, 0.2);
         }
 
         video {
@@ -85,7 +86,6 @@
             transform: scaleX(-1);
         }
 
-        /* Custom Scanner Overlay */
         .scan-overlay {
             position: absolute;
             top: 0;
@@ -99,21 +99,21 @@
             align-items: center;
         }
 
-        /* Target Circle for Lips */
+        /* Target Circle */
         .target-circle {
-            width: 140px;
-            height: 75px;
-            border: 2px dashed #ff4081;
+            width: 150px;
+            height: 80px;
+            border: 2px dashed #e040fb;
             border-radius: 50%;
             position: relative;
-            box-shadow: 0 0 25px rgba(255, 64, 129, 0.4), inset 0 0 15px rgba(255, 64, 129, 0.2);
+            box-shadow: 0 0 25px rgba(224, 64, 251, 0.5), inset 0 0 15px rgba(224, 64, 251, 0.3);
             transition: all 0.3s ease;
-            animation: radarPulse 2s infinite;
+            animation: chakraPulse 2s infinite ease-in-out;
         }
 
-        @keyframes radarPulse {
+        @keyframes chakraPulse {
             0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 35px rgba(255, 64, 129, 0.8); }
+            50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 40px rgba(224, 64, 251, 0.9); }
             100% { transform: scale(1); opacity: 0.8; }
         }
 
@@ -121,25 +121,25 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 10px;
-            height: 10px;
-            background: #ff4081;
+            width: 8px;
+            height: 8px;
+            background: #e040fb;
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 10px #ff4081;
+            box-shadow: 0 0 10px #e040fb;
         }
 
         .instruction-badge {
             position: absolute;
             bottom: 16px;
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(18, 12, 31, 0.85);
+            border: 1px solid rgba(224, 64, 251, 0.4);
             backdrop-filter: blur(8px);
             padding: 8px 16px;
             border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            color: #f3e5f5;
             letter-spacing: 0.5px;
             animation: bounce 1.5s infinite;
         }
@@ -149,20 +149,19 @@
             50% { transform: translateY(-5px); }
         }
 
-        /* Floating Volume Popups */
         .vol-pop {
             position: absolute;
-            color: #ff4081;
+            color: #e040fb;
             font-weight: 900;
-            font-size: 18px;
+            font-size: 16px;
             pointer-events: none;
             animation: floatUp 0.8s forwards ease-out;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         @keyframes floatUp {
             0% { opacity: 1; transform: translate(-50%, 0) scale(0.8); }
-            100% { opacity: 0; transform: translate(-50%, -50px) scale(1.4); }
+            100% { opacity: 0; transform: translate(-50%, -45px) scale(1.3); }
         }
 
         /* Progress Bar */
@@ -175,13 +174,12 @@
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
         }
 
         .progress-bar-fill {
             height: 100%;
-            width: 20%;
-            background: linear-gradient(90deg, #ff4081, #7c4dff);
+            width: 15%;
+            background: linear-gradient(90deg, #e040fb, #00e5ff);
             border-radius: 10px;
             transition: width 0.3s ease;
         }
@@ -195,7 +193,7 @@
             font-weight: 600;
         }
 
-        /* Phase 2: Calibration & Results */
+        /* Phases */
         .phase {
             display: none;
         }
@@ -205,13 +203,13 @@
         }
 
         .alert-box {
-            background: rgba(244, 67, 54, 0.15);
-            border: 1px solid rgba(244, 67, 54, 0.4);
-            color: #ff5252;
+            background: rgba(224, 64, 251, 0.1);
+            border: 1px solid rgba(224, 64, 251, 0.3);
+            color: #f3e5f5;
             padding: 14px;
             border-radius: 16px;
-            font-size: 13px;
-            line-height: 1.5;
+            font-size: 12px;
+            line-height: 1.6;
             margin-bottom: 20px;
             text-align: left;
         }
@@ -227,7 +225,7 @@
 
         button {
             padding: 14px 24px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             border: none;
             border-radius: 50px;
@@ -236,14 +234,10 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #ff4081, #c2185b);
+            background: linear-gradient(135deg, #e040fb, #7c4dff);
             color: white;
-            box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4);
+            box-shadow: 0 6px 20px rgba(224, 64, 251, 0.4);
             width: 100%;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
         }
 
         .btn-no {
@@ -254,7 +248,6 @@
             white-space: nowrap;
         }
 
-        /* Success screen */
         .coffee-card {
             text-align: center;
             padding: 10px 0;
@@ -267,24 +260,24 @@
         }
 
         .coffee-title {
-            font-size: 22px;
-            color: #ff4081;
+            font-size: 20px;
+            color: #e040fb;
             font-weight: 800;
             margin-bottom: 10px;
         }
 
         .coffee-desc {
-            font-size: 14px;
+            font-size: 13px;
             color: rgba(255, 255, 255, 0.8);
             line-height: 1.6;
         }
 
         .rule-badge {
             display: inline-block;
-            background: rgba(255, 193, 7, 0.2);
-            border: 1px solid rgba(255, 193, 7, 0.5);
+            background: rgba(255, 193, 7, 0.15);
+            border: 1px solid rgba(255, 193, 7, 0.4);
             color: #ffca28;
-            padding: 6px 12px;
+            padding: 8px 14px;
             border-radius: 12px;
             font-size: 12px;
             margin-top: 15px;
@@ -296,11 +289,11 @@
 
     <div class="container">
         
-        <!-- FAZA 1: SKENIRANJE I TAPKANJE PO KAMERI -->
+        <!-- FAZA 1: JOGA SKENIRANJE -->
         <div id="phase1" class="phase active">
-            <div class="header-tag">AI Detekcija Volumena</div>
-            <h1>Skeniranje i Kalibracija</h1>
-            <p class="desc">Postavi usne u označeni krug i <strong>dotakni ekran na kameri</strong> za očitivanje kubikaže.</p>
+            <div class="header-tag">YOGA CHAKRA DETECTOR</div>
+            <h1>Poravnanje Lip-Čakre 🧘‍♀️</h1>
+            <p class="desc">Napravi "Duck-Face" pozu i <strong>tapni prstom na svoje usne na ekranu</strong> za mjerenje aerodinamike za stazu.</p>
 
             <div class="camera-wrapper" id="camWrapper" onclick="tapToScan(event)">
                 <video id="webcam" autoplay playsinline muted></video>
@@ -308,7 +301,7 @@
                     <div class="target-circle" id="targetCircle">
                         <div class="target-crosshair"></div>
                     </div>
-                    <div class="instruction-badge">👆 DOTAKNI USNE NA EKRANU</div>
+                    <div class="instruction-badge">🧘‍♀️ DOTAKNI USNE ZA OTVALJANJE ČAKRE</div>
                 </div>
             </div>
 
@@ -317,42 +310,43 @@
                     <div class="progress-bar-fill" id="progressFill"></div>
                 </div>
                 <div class="status-text">
-                    <span id="statusLabel">Status: 2.2 ml (Normal)</span>
-                    <span id="percentLabel">20%</span>
+                    <span id="statusLabel">Balans: 2.0 ml (Prirodna Čakra)</span>
+                    <span id="percentLabel">15%</span>
                 </div>
             </div>
         </div>
 
-        <!-- FAZA 2: DRAMATIČNO UPOZORENJE I ZEZANJE -->
+        <!-- FAZA 2: JOGA UPOZORENJE I ANALIZA POZA -->
         <div id="phase2" class="phase">
-            <div class="header-tag" style="background: rgba(244,67,54,0.2); color: #ff5252; border-color: rgba(244,67,54,0.5);">CRITICAL OVERLOAD</div>
-            <h1 style="color: #ff5252;">Sistem Blokiran! 🚨</h1>
+            <div class="header-tag" style="background: rgba(244,67,54,0.2); color: #ff5252; border-color: rgba(244,67,54,0.5);">CHAKRA OVERLOAD</div>
+            <h1 style="color: #ff5252;">Joga Narušena! 🚨</h1>
             
             <div class="alert-box">
-                <strong>UPOZORENJE INSPEKCIJE:</strong><br>
-                Otkriveno prekoračenje dozvoljenog volumena (<strong>12.5 ml</strong>).<br><br>
-                • <strong>FaceID:</strong> Onemogućen (preko 80% izmjene profila).<br>
-                • <strong>Aerodinamika:</strong> Rizik od uzgona pri većim brzinama vjetra.
+                <strong>IZVJEŠTAJ AI INSTRUCTORA:</strong><br>
+                Detektovan volumen usana od čak <strong>14.5 ml</strong>!<br><br>
+                🧘‍♀️ <strong>Downward Dog poza:</strong> Usne stvaraju prevelik prednji otpor – rizik od pada na lice.<br>
+                💨 <strong>Pranayama disanje:</strong> Smanjen protok zraka zbog gustine volumena.<br>
+                ⚖️ <strong>Zakon Gravitacije:</strong> Centar ravnoteže pomjeren unaprijed.
             </div>
 
-            <p class="desc">Za deblokadu sistema i izdavanje atesta, izaberite opciju ispod:</p>
+            <p class="desc">Za deblokadu joga časova i rehidraciju čakri, odaberi opciju:</p>
 
             <div class="btn-group" id="btnGroup">
-                <button class="btn-primary" id="yesBtn" onclick="finishToCoffee()">Prihvatam Atest & Kafu ☕</button>
-                <button class="btn-no" id="noBtn" onmouseover="moveNoBtn()" onclick="moveNoBtn()">Odbijam Atest 😒</button>
+                <button class="btn-primary" id="yesBtn" onclick="finishToCoffee()">Prihvatam Joga Oporavak (Kafa) ☕</button>
+                <button class="btn-no" id="noBtn" onmouseover="moveNoBtn()" onclick="moveNoBtn()">Vrati staru čakru 😒</button>
             </div>
         </div>
 
         <!-- FAZA 3: ZAVRŠNICA / KAFA -->
         <div id="phase3" class="phase">
             <div class="coffee-card">
-                <div class="coffee-icon">☕💋</div>
-                <div class="coffee-title">Atest Uspješno Izdat!</div>
+                <div class="coffee-icon">☕🧘‍♀️💋</div>
+                <div class="coffee-title">Čakra Uspješno Rehidrirana!</div>
                 <div class="coffee-desc">
-                    Verifikacija završena! Zbog novih aerodinamičkih uslova, dužna si otići na kafu.
+                    Joga instruktor propisuje hitnu rehidraciju kofeinom. Obavezno javljanje na kafu u najkraćem roku!
                 </div>
                 <div class="rule-badge">
-                    ⚠️ STROGO PRAVILO: Kafa se pije BEZ SLAMČICE! 😉
+                    ⚠️ STROGO JOGA PRAVILO: Kafa se pije BEZ SLAMČICE da se ne naruši forma usana! 😉
                 </div>
             </div>
         </div>
@@ -361,9 +355,8 @@
 
     <script>
         let clicks = 0;
-        let volume = 2.2;
+        let volume = 2.0;
 
-        // Automatsko pokretanje kamere
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
             .then(stream => {
                 document.getElementById('webcam').srcObject = stream;
@@ -374,9 +367,8 @@
 
         function tapToScan(e) {
             clicks++;
-            volume += 2.5;
+            volume += 3.0;
 
-            // Zvučni / vizuelni efekat tapkanja
             const wrapper = document.getElementById('camWrapper');
             const rect = wrapper.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -384,19 +376,17 @@
 
             const pop = document.createElement('div');
             pop.className = 'vol-pop';
-            pop.innerText = `+2.5ml 💋`;
+            pop.innerText = `+3.0ml ZEN 🧘‍♀️`;
             pop.style.left = `${x}px`;
             pop.style.top = `${y}px`;
             wrapper.appendChild(pop);
 
             setTimeout(() => pop.remove(), 800);
 
-            // Povećaj krug na kameri
             const circle = document.getElementById('targetCircle');
-            circle.style.transform = `scale(${1 + clicks * 0.15})`;
+            circle.style.transform = `scale(${1 + clicks * 0.18})`;
 
-            // Update progresa
-            const percent = Math.min(20 + clicks * 20, 100);
+            const percent = Math.min(15 + clicks * 25, 100);
             document.getElementById('progressFill').style.width = `${percent}%`;
             document.getElementById('percentLabel').innerText = `${percent}%`;
             document.getElementById('statusLabel').innerText = `Volumen: ${volume.toFixed(1)} ml`;
@@ -413,7 +403,6 @@
             const noBtn = document.getElementById('noBtn');
             const group = document.getElementById('btnGroup');
             
-            const maxX = group.clientWidth - noBtn.offsetWidth;
             const randomX = (Math.random() - 0.5) * 160;
             const randomY = (Math.random() - 0.5) * 80;
 
